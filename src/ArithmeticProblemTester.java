@@ -15,7 +15,13 @@
 public class ArithmeticProblemTester {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		String fileName = "addsAndSubtracts";
+
+		FileOperations fileOps = new FileOperations();
+		fileOps.readFile(fileName);
+		for (int i = 0; i < fileOps.getLinesFromInputFile().size(); i++) {
+			System.out.println(fileOps.getLinesFromInputFile(i));
+		}
 
 	}
 

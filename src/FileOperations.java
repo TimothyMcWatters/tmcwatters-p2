@@ -1,3 +1,5 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,12 +21,36 @@ public class FileOperations {
 	private ArrayList<String> linesFromInputFile = null;
 	
 	/**
-	 * Reads a file and calls the helper method populateLinesArrayList to populate an ArrayList
+	 * Default constructor for the FileOperations class
+	 */
+	public FileOperations() {
+		linesFromInputFile = new ArrayList<String>();
+	}
+
+	/**
+	 * @return the linesFromInputFile
+	 */
+	public ArrayList<String> getLinesFromInputFile() {
+		return linesFromInputFile;
+	}
+
+	/**
+	 * Reads a file line by line, and calls the helper method populateLinesArrayList to populate an ArrayList
 	 * with each line read in from the file.
 	 * @param fileName = name of the file to read
 	 */
 	public void readFile(String fileName) {
-
+		try {
+			inputStream = new Scanner(new FileInputStream(fileName));
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("Error: File " + fileName + " was not found, or could not be opened.");
+			System.exit(0);
+		}
+		while (inputStream.hasNextLine()) {
+			populateLinesArrayList(inputStream.nextLine());
+		} 
+		inputStream.close();
 	}
 	
 	/**
@@ -32,7 +58,7 @@ public class FileOperations {
 	 * @param lineFromFile = The string to populate the ArrayList with
 	 */
 	private void populateLinesArrayList(String lineFromFile) {
-		
+		linesFromInputFile.add(lineFromFile);
 	}
 	
 	/**
@@ -43,8 +69,7 @@ public class FileOperations {
 	 * ArrayList<String>
 	 */
 	public String getLinesFromInputFile(int indexOfArrayList) {
-		String lineFromInputFile = "";
-		return lineFromInputFile;
+		return linesFromInputFile.get(indexOfArrayList);
 	}
 	
 }
