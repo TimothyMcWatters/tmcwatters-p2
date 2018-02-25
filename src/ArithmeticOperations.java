@@ -35,10 +35,27 @@ public class ArithmeticOperations {
 	}
 	
 	private Character add(Character firstCharacterToAdd, Character secondCharacterToAdd) {
-		return ' ';
+		int carry = 0;
+		if (this.carryFlag == true) {
+			carry = 1;
+		} else {
+			carry = 0;
+		}
+		this.carryFlag = false;
+		int addResult = Integer.parseInt(firstCharacterToAdd.toString()) + Integer.parseInt(secondCharacterToAdd.toString()) + carry;
+		if (addResult > 9) {
+			this.carryFlag = true;
+			int lastDigit = (addResult - 10);
+			return (char)(lastDigit);
+		} else {
+			return (char) addResult;
+		}
 	}
 	
 	private Character subtract(Character firstCharacterToSubtract, Character secondCharacterToSubtract) {
+		boolean borrow = borrowFlag;
+		borrowFlag = false;
+		
 		return ' ';
 	}
 }
