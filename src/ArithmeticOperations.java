@@ -19,8 +19,8 @@ public class ArithmeticOperations {
 	private boolean resultIsNegative = false;
 	
 	public String solveProblem(Problem problemToSolve) {
-		System.out.println(add('5','4'));
-		System.out.println(this.carryFlag);
+		System.out.println(add('2','4'));
+		System.out.println(this.borrowFlag);
 		
 		
 		return "";
@@ -67,9 +67,15 @@ public class ArithmeticOperations {
 	}
 	
 	private Character subtract(Character firstCharacterToSubtract, Character secondCharacterToSubtract) {
-		boolean borrow = borrowFlag;
-		borrowFlag = false;
-		
-		return ' ';
+		this.borrowFlag = false;
+		Integer intFirstCharacterToSubtract = Integer.parseInt(firstCharacterToSubtract.toString());
+		Integer intSecondCharacterToSubtract = Integer.parseInt(secondCharacterToSubtract.toString());
+		if (intFirstCharacterToSubtract.compareTo(intSecondCharacterToSubtract) < 0) {
+			intFirstCharacterToSubtract += 10;
+			this.borrowFlag = true;
+		}
+		int subtractResult = intFirstCharacterToSubtract - intSecondCharacterToSubtract;
+		char[] convertedSubtractResult = Character.toChars('0' + subtractResult);
+		return convertedSubtractResult[0];
 	}
 }
