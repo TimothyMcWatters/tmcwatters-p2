@@ -19,6 +19,10 @@ public class ArithmeticOperations {
 	private boolean resultIsNegative = false;
 	
 	public String solveProblem(Problem problemToSolve) {
+		System.out.println(add('5','4'));
+		System.out.println(this.carryFlag);
+		
+		
 		return "";
 	}
 	
@@ -34,6 +38,13 @@ public class ArithmeticOperations {
 		return "";
 	}
 	
+	/**
+	 * Performs addition on two character representations of int's
+	 * will return the last digit of the result, and if result is > 9 will update carryFlag to true
+	 * @param firstCharacterToAdd
+	 * @param secondCharacterToAdd
+	 * @return a character representation of the last digit of the addition performed
+	 */
 	private Character add(Character firstCharacterToAdd, Character secondCharacterToAdd) {
 		int carry = 0;
 		if (this.carryFlag == true) {
@@ -43,12 +54,15 @@ public class ArithmeticOperations {
 		}
 		this.carryFlag = false;
 		int addResult = Integer.parseInt(firstCharacterToAdd.toString()) + Integer.parseInt(secondCharacterToAdd.toString()) + carry;
+		
 		if (addResult > 9) {
 			this.carryFlag = true;
 			int lastDigit = (addResult - 10);
-			return (char)(lastDigit);
+			char[] convertedAddResult = Character.toChars('0' + lastDigit);
+			return convertedAddResult[0];
 		} else {
-			return (char) addResult;
+			char[] convertedAddResult = Character.toChars('0' + addResult);
+			return convertedAddResult[0];
 		}
 	}
 	

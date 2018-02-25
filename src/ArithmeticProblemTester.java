@@ -27,7 +27,8 @@ public class ArithmeticProblemTester {
 			Problem problem = GenerateProblems.getCollectionOfProblems().get(i);
 			problem.printProblem();
 		}
-
+		ArithmeticOperations aOps = new ArithmeticOperations();
+		aOps.solveProblem(GenerateProblems.getCollectionOfProblems().get(0));
 
 	}
 
