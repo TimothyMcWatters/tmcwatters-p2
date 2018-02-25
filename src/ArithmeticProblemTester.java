@@ -19,9 +19,15 @@ public class ArithmeticProblemTester {
 
 		FileOperations fileOps = new FileOperations();
 		fileOps.readFile(fileName);
-		for (int i = 0; i < fileOps.getLinesFromInputFile().size(); i++) {
-			System.out.println(fileOps.getLinesFromInputFile(i));
+		
+		GenerateProblems genProbs = new GenerateProblems();
+		genProbs.populateProblemList();
+		
+		for (int i = 0; i < GenerateProblems.getCollectionOfProblems().size(); i++) {
+			Problem problem = GenerateProblems.getCollectionOfProblems().get(i);
+			problem.printProblem();
 		}
+
 
 	}
 

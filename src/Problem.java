@@ -138,12 +138,27 @@ public class Problem {
 		this.solution = solution;
 	}
 	
+	/**
+	 * Formats and returns the String representation of the problem to solve plus solution.
+	 * @return problem = the problem to solve w/ solution in a formated String representation
+	 */
 	public String toString() {
-		return "";
+		String firstLine = getFirstOperandSign() + getFirstOperand();
+		String secondLine = getOperator() + " " + getSecondOperandSign() + getSecondOperand();
+		String thirdLine = "";
+		for (int i = 0; i < secondLine.length(); i++) {
+			thirdLine += "_";
+		}
+		String fourthLine = getSolution();
+		String problem = "  " + firstLine + "\n" + secondLine + "\n" + thirdLine + "\n" + fourthLine + "\n";
+		return problem;
 	}
 	
+	/**
+	 * Prints the problem to solve plus solution.
+	 */
 	public void printProblem() {
-		
+		System.out.println(toString());
 	}
 	
 }

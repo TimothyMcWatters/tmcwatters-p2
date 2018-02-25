@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class FileOperations {
 	private Scanner inputStream = null;
-	private ArrayList<String> linesFromInputFile = null;
+	private static ArrayList<String> linesFromInputFile = null;
 	
 	/**
 	 * Default constructor for the FileOperations class
@@ -30,7 +30,7 @@ public class FileOperations {
 	/**
 	 * @return the linesFromInputFile
 	 */
-	public ArrayList<String> getLinesFromInputFile() {
+	public static ArrayList<String> getLinesFromInputFile() {
 		return linesFromInputFile;
 	}
 
@@ -57,7 +57,7 @@ public class FileOperations {
 	 * Populates an ArrayList with Strings
 	 * @param lineFromFile = The string to populate the ArrayList with
 	 */
-	private void populateLinesArrayList(String lineFromFile) {
+	private static void populateLinesArrayList(String lineFromFile) {
 		linesFromInputFile.add(lineFromFile);
 	}
 	
@@ -68,7 +68,7 @@ public class FileOperations {
 	 * @return lineFromInputFile = The line of the input file that has been stored in the
 	 * ArrayList<String>
 	 */
-	public String getLinesFromInputFile(int indexOfArrayList) {
+	public static String getLinesFromInputFile(int indexOfArrayList) {
 		return linesFromInputFile.get(indexOfArrayList);
 	}
 	
