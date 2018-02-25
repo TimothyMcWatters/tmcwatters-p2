@@ -1,4 +1,4 @@
-
+import java.util.LinkedList;
 /**
  * @author Timothy McWatters
  * @version 1.0
@@ -13,17 +13,30 @@
  */
 
 public class StackManager {
-	private Node top = null;
+	LinkedList<Character> ll = new LinkedList<Character>();
+	//private Node top = null;
 	
+	/**
+	 * Pushes a Character on to the stack
+	 * @param characterToPushOnStack
+	 */
 	public void push(Character characterToPushOnStack) {
-		
+		ll.push(characterToPushOnStack);
 	}
 	
+	/**
+	 * Pops a Character off the stack and returns it
+	 * @return Character from the stack
+	 */
 	public Character pop() {
-		return ' ';
+		return (Character) ll.pop();
 	}
 	
+	/**
+	 * Determines if the LinkedList is empty
+	 * @return true if empty
+	 */
 	public boolean isEmpty() {
-		return false;
+		return ll.isEmpty();
 	}
 }

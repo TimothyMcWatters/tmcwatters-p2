@@ -19,19 +19,65 @@ public class ArithmeticOperations {
 	private boolean resultIsNegative = false;
 	
 	public String solveProblem(Problem problemToSolve) {
-		System.out.println(add('2','4'));
-		System.out.println(this.borrowFlag);
-		
-		
-		return "";
+		String solution = determineOperation(problemToSolve);
+		problemToSolve.setSolution(solution);
+		return solution;
 	}
 	
 	private String determineOperation(Problem problemToDetermineOperationOf) {
-		return "";
+		String solution = "";
+		String firstOpSign = problemToDetermineOperationOf.getFirstOperandSign();
+		String secondOpSign = problemToDetermineOperationOf.getSecondOperandSign();
+		String operator = problemToDetermineOperationOf.getOperator();
+		
+		if (operator.equalsIgnoreCase("+")) {
+			if (firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("+")) {
+				solution = addOperation(problemToDetermineOperationOf);
+			}
+			else if (firstOpSign.equalsIgnoreCase("-") && secondOpSign.equalsIgnoreCase("-")) {
+				solution = addOperation(problemToDetermineOperationOf);
+			} else {
+				solution = subtractOperation(problemToDetermineOperationOf);
+			}
+		}
+		if (operator.equalsIgnoreCase("-")) {
+			if (firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("+")) {
+				solution = subtractOperation(problemToDetermineOperationOf);
+			}
+			else if (firstOpSign.equalsIgnoreCase("-") && secondOpSign.equalsIgnoreCase("-")) {
+				solution = subtractOperation(problemToDetermineOperationOf);
+			} else {
+				solution = addOperation(problemToDetermineOperationOf);
+			}
+		}
+		return solution;
 	}
 	
 	private String addOperation(Problem problemToPerformAddOpOn) {
-		return "";
+		String solution = "";
+		StackManager firstOpStack = new StackManager();
+		StackManager secondOpStack = new StackManager();
+		StackManager resultStack = new StackManager();
+		
+		String firstOp = problemToPerformAddOpOn.getFirstOperand();
+		for (int i = 0; i < firstOp.length(); i++) {
+			firstOpStack.push(firstOp.charAt(i));
+		}
+		
+		String secondOp = problemToPerformAddOpOn.getSecondOperand();
+		Character[] secondOpCharacterArray;
+		for (int i = 0; i < secondOp.length(); i++) {
+			secondOpStack.push(secondOp.charAt(i));
+		}
+
+		while (!firstOpStack.isEmpty()) {
+			resultStack.push(add(firstOpStack.pop(), secondOpStack.pop()));
+		}
+
+		while (!resultStack.isEmpty()) {
+			solution += resultStack.pop();
+		}
+		return solution;
 	}
 	
 	private String subtractOperation(Problem problemToPerformSubtractOpOn) {
