@@ -18,12 +18,22 @@ public class ArithmeticOperations {
 	private boolean borrowFlag = false;
 	private boolean resultIsNegative = false;
 	
+	/**
+	 * Coordinates the problem solving efforts for a Problem 
+	 * @param problemToSolve
+	 * @return solution to the Problem in String form
+	 */
 	public String solveProblem(Problem problemToSolve) {
 		String solution = determineOperation(problemToSolve);
 		problemToSolve.setSolution(solution);
 		return solution;
 	}
 	
+	/**
+	 * Determines if subtractOperation() or addOperation() method gets called based on the Problem set up
+	 * @param problemToDetermineOperationOf
+	 * @return soltion to the problem in String form
+	 */
 	private String determineOperation(Problem problemToDetermineOperationOf) {
 		String solution = "";
 		String firstOpSign = problemToDetermineOperationOf.getFirstOperandSign();
@@ -35,7 +45,7 @@ public class ArithmeticOperations {
 				solution = addOperation(problemToDetermineOperationOf);
 			}
 			else if (firstOpSign.equalsIgnoreCase("-") && secondOpSign.equalsIgnoreCase("-")) {
-				solution = addOperation(problemToDetermineOperationOf);
+				solution = "-" + addOperation(problemToDetermineOperationOf);
 			} else {
 				solution = subtractOperation(problemToDetermineOperationOf);
 			}
@@ -46,13 +56,21 @@ public class ArithmeticOperations {
 			}
 			else if (firstOpSign.equalsIgnoreCase("-") && secondOpSign.equalsIgnoreCase("-")) {
 				solution = subtractOperation(problemToDetermineOperationOf);
-			} else {
+			} else if (firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("-")) {
 				solution = addOperation(problemToDetermineOperationOf);
+			} else {
+				solution = "-" + addOperation(problemToDetermineOperationOf);
 			}
+				
 		}
 		return solution;
 	}
 	
+	/**
+	 * performs the addition on a problem by using a StackManager and calling the helper add() method
+	 * @param problemToPerformAddOpOn
+	 * @return the solution in String form
+	 */
 	private String addOperation(Problem problemToPerformAddOpOn) {
 		String solution = "";
 		StackManager firstOpStack = new StackManager();
@@ -65,7 +83,6 @@ public class ArithmeticOperations {
 		}
 		
 		String secondOp = problemToPerformAddOpOn.getSecondOperand();
-		Character[] secondOpCharacterArray;
 		for (int i = 0; i < secondOp.length(); i++) {
 			secondOpStack.push(secondOp.charAt(i));
 		}
@@ -80,8 +97,71 @@ public class ArithmeticOperations {
 		return solution;
 	}
 	
+	/**
+	 * performs the subtraction on a problem by using a StackManager and calling the helper subtract() method
+	 * @param problemToPerformSubtractOpOn
+	 * @return the solution in String form
+	 */
 	private String subtractOperation(Problem problemToPerformSubtractOpOn) {
-		return "";
+		String solution = "";
+		Boolean firstOpIsBigger = problemToPerformSubtractOpOn.isFirstOperandIsBigger();
+		String firstOpSign = problemToPerformSubtractOpOn.getFirstOperandSign();
+		String secondOpSign = problemToPerformSubtractOpOn.getSecondOperandSign();
+		String operator = problemToPerformSubtractOpOn.getOperator();
+		
+		StackManager firstOpStack = new StackManager();
+		StackManager secondOpStack = new StackManager();
+		StackManager resultStack = new StackManager();
+		
+		String firstOp = problemToPerformSubtractOpOn.getFirstOperand();
+		for (int i = 0; i < firstOp.length(); i++) {
+			firstOpStack.push(firstOp.charAt(i));
+		}
+		
+		String secondOp = problemToPerformSubtractOpOn.getSecondOperand();
+		for (int i = 0; i < secondOp.length(); i++) {
+			secondOpStack.push(secondOp.charAt(i));
+		}
+		
+		if (firstOpIsBigger) {
+			if ((firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("+") && operator.equalsIgnoreCase("-")) ||
+					(firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("-") && operator.equalsIgnoreCase("+"))) {
+				while (!firstOpStack.isEmpty()) {
+					resultStack.push(subtract(firstOpStack.pop(), secondOpStack.pop()));
+				}
+				while (!resultStack.isEmpty()) {
+					solution += resultStack.pop();
+				}
+				return solution;
+			} else {
+				while (!firstOpStack.isEmpty()) {
+					resultStack.push(subtract(firstOpStack.pop(), secondOpStack.pop()));
+				}
+				while (!resultStack.isEmpty()) {
+					solution += resultStack.pop();
+				}
+				return "-" + solution;
+			}
+		} else {
+			if ((firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("+") && operator.equalsIgnoreCase("-")) ||
+					(firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("-") && operator.equalsIgnoreCase("+"))) {
+				while (!firstOpStack.isEmpty()) {
+					resultStack.push(subtract(secondOpStack.pop(), firstOpStack.pop()));
+				}
+				while (!resultStack.isEmpty()) {
+					solution += resultStack.pop();
+				}
+				return "-" + solution;
+			} else {
+				while (!firstOpStack.isEmpty()) {
+					resultStack.push(subtract(secondOpStack.pop(), firstOpStack.pop()));
+				}
+				while (!resultStack.isEmpty()) {
+					solution += resultStack.pop();
+				}
+				return solution;
+			}
+		}
 	}
 	
 	/**
@@ -112,10 +192,21 @@ public class ArithmeticOperations {
 		}
 	}
 	
+	/**
+	 * Performs subtraction actions on two Characters by converting them to ints and back to Characters
+	 * @param firstCharacterToSubtract
+	 * @param secondCharacterToSubtract
+	 * @return the result of the subtraction
+	 */
 	private Character subtract(Character firstCharacterToSubtract, Character secondCharacterToSubtract) {
-		this.borrowFlag = false;
 		Integer intFirstCharacterToSubtract = Integer.parseInt(firstCharacterToSubtract.toString());
 		Integer intSecondCharacterToSubtract = Integer.parseInt(secondCharacterToSubtract.toString());
+		
+		if(this.borrowFlag == true) {
+			intFirstCharacterToSubtract -= 1;
+			this.borrowFlag = false;
+		} 
+		
 		if (intFirstCharacterToSubtract.compareTo(intSecondCharacterToSubtract) < 0) {
 			intFirstCharacterToSubtract += 10;
 			this.borrowFlag = true;
