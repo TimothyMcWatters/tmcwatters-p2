@@ -13,26 +13,27 @@
  */
 
 public class ArithmeticOperations {
-	private boolean firstOperandIsOnTop = false;
+	//Flags for the add or subtract operations on Characters
+	//Corrects the next Character in the stack based on the previous Character's result
 	private boolean carryFlag = false;
 	private boolean borrowFlag = false;
-	private boolean resultIsNegative = false;
 	
 	/**
-	 * Coordinates the problem solving efforts for a Problem 
+	 * Coordinates the problem solving efforts for a Problem and provides for a public interface to the Class
 	 * @param problemToSolve
 	 * @return solution to the Problem in String form
 	 */
-	public String solveProblem(Problem problemToSolve) {
+	public void solveProblem(Problem problemToSolve) {
+		//Solves the Problem (step passes Problem to the helper method (determining algorithm))
 		String solution = determineOperation(problemToSolve);
+		//Sets the solution to the solution calculated by this class
 		problemToSolve.setSolution(solution);
-		return solution;
 	}
 	
 	/**
 	 * Determines if subtractOperation() or addOperation() method gets called based on the Problem set up
 	 * @param problemToDetermineOperationOf
-	 * @return soltion to the problem in String form
+	 * @return solution to the problem in String form
 	 */
 	private String determineOperation(Problem problemToDetermineOperationOf) {
 		String solution = "";
@@ -40,6 +41,7 @@ public class ArithmeticOperations {
 		String secondOpSign = problemToDetermineOperationOf.getSecondOperandSign();
 		String operator = problemToDetermineOperationOf.getOperator();
 		
+		//Determines how to solve the Problem based on Operand Signs, and the Operator
 		if (operator.equalsIgnoreCase("+")) {
 			if (firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("+")) {
 				solution = addOperation(problemToDetermineOperationOf);
@@ -61,7 +63,6 @@ public class ArithmeticOperations {
 			} else {
 				solution = "-" + addOperation(problemToDetermineOperationOf);
 			}
-				
 		}
 		return solution;
 	}
@@ -77,20 +78,22 @@ public class ArithmeticOperations {
 		StackManager secondOpStack = new StackManager();
 		StackManager resultStack = new StackManager();
 		
+		//Populates the 2 operand stacks
 		String firstOp = problemToPerformAddOpOn.getFirstOperand();
 		for (int i = 0; i < firstOp.length(); i++) {
 			firstOpStack.push(firstOp.charAt(i));
 		}
-		
 		String secondOp = problemToPerformAddOpOn.getSecondOperand();
 		for (int i = 0; i < secondOp.length(); i++) {
 			secondOpStack.push(secondOp.charAt(i));
 		}
 
+		//Populates the Solution stack with results from add
 		while (!firstOpStack.isEmpty()) {
 			resultStack.push(add(firstOpStack.pop(), secondOpStack.pop()));
 		}
 
+		//Builds a solution string based on the solution stack
 		while (!resultStack.isEmpty()) {
 			solution += resultStack.pop();
 		}
@@ -108,21 +111,23 @@ public class ArithmeticOperations {
 		String firstOpSign = problemToPerformSubtractOpOn.getFirstOperandSign();
 		String secondOpSign = problemToPerformSubtractOpOn.getSecondOperandSign();
 		String operator = problemToPerformSubtractOpOn.getOperator();
-		
 		StackManager firstOpStack = new StackManager();
 		StackManager secondOpStack = new StackManager();
 		StackManager resultStack = new StackManager();
 		
+		//Populates the 2 operand stacks
 		String firstOp = problemToPerformSubtractOpOn.getFirstOperand();
 		for (int i = 0; i < firstOp.length(); i++) {
 			firstOpStack.push(firstOp.charAt(i));
 		}
-		
 		String secondOp = problemToPerformSubtractOpOn.getSecondOperand();
 		for (int i = 0; i < secondOp.length(); i++) {
 			secondOpStack.push(secondOp.charAt(i));
 		}
 		
+		//Determines the best order to subtract based off of Signs, Operator, and size of first Operand verses the Second
+		//Populates the Solution stack with results from subtract
+		//Builds a solution string based on the solution stack
 		if (firstOpIsBigger) {
 			if ((firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("+") && operator.equalsIgnoreCase("-")) ||
 					(firstOpSign.equalsIgnoreCase("+") && secondOpSign.equalsIgnoreCase("-") && operator.equalsIgnoreCase("+"))) {
@@ -172,6 +177,7 @@ public class ArithmeticOperations {
 	 * @return a character representation of the last digit of the addition performed
 	 */
 	private Character add(Character firstCharacterToAdd, Character secondCharacterToAdd) {
+		//Determines if the previous step had a carry that needs to be handled in this step
 		int carry = 0;
 		if (this.carryFlag == true) {
 			carry = 1;
@@ -181,6 +187,7 @@ public class ArithmeticOperations {
 		this.carryFlag = false;
 		int addResult = Integer.parseInt(firstCharacterToAdd.toString()) + Integer.parseInt(secondCharacterToAdd.toString()) + carry;
 		
+		//Performs the Arithmetic on the two Characters
 		if (addResult > 9) {
 			this.carryFlag = true;
 			int lastDigit = (addResult - 10);
@@ -202,15 +209,19 @@ public class ArithmeticOperations {
 		Integer intFirstCharacterToSubtract = Integer.parseInt(firstCharacterToSubtract.toString());
 		Integer intSecondCharacterToSubtract = Integer.parseInt(secondCharacterToSubtract.toString());
 		
+		//Determines if we borrowed from this Character in the previous step
 		if(this.borrowFlag == true) {
 			intFirstCharacterToSubtract -= 1;
 			this.borrowFlag = false;
 		} 
 		
+		//Determines if we need to borrow from the next Character to complete this step
 		if (intFirstCharacterToSubtract.compareTo(intSecondCharacterToSubtract) < 0) {
 			intFirstCharacterToSubtract += 10;
 			this.borrowFlag = true;
 		}
+		
+		//Performs the Arithmetic operation on these two Characters
 		int subtractResult = intFirstCharacterToSubtract - intSecondCharacterToSubtract;
 		char[] convertedSubtractResult = Character.toChars('0' + subtractResult);
 		return convertedSubtractResult[0];

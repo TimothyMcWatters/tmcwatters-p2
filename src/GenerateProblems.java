@@ -16,7 +16,7 @@ import java.util.StringTokenizer;
 
 public class GenerateProblems {
 	public static final int numTokensPerProblem = 3;
-	public static final int maxTokensPerOperandWithSign = 2;
+	public static final int maxTokensPerOperandWithSign = 2; //might only be 1 if the Operand is positive with no sign.
 	private static ArrayList<Problem> collectionOfProblems = null;
 	
 	/**

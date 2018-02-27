@@ -28,6 +28,7 @@ public class FileOperations {
 	}
 
 	/**
+	 * Getter for the linesFromInputFile ArrayList<String>
 	 * @return the linesFromInputFile
 	 */
 	public static ArrayList<String> getLinesFromInputFile() {

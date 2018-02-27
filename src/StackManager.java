@@ -14,7 +14,7 @@ import java.util.LinkedList;
 
 public class StackManager {
 	LinkedList<Character> ll = new LinkedList<Character>();
-	//private Node top = null;
+	//private Node top = null; //Not needed for LinkedList<Character> implemented project version
 	
 	/**
 	 * Pushes a Character on to the stack
